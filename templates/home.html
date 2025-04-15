@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Incident Management API</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f3f4f6;
+      color: #2d3748;
+    }
+
+    header {
+      background-color: #00537C;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .route {
+      margin-bottom: 20px;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .GET {
+      background-color: #61affe;
+    }
+
+    .POST {
+      background-color: #49cc90;
+    }
+
+    .DELETE {
+      background-color: #f93e3e;
+    }
+
+    .PUT {
+      background-color: #fca130;
+    }
+
+    .route-path a {
+      font-family: monospace;
+      font-size: 16px;
+      color: #0f65f8;
+      text-decoration: none;
+    }
+
+    .route-path a:hover {
+      text-decoration: underline;
+      color: hsla(241, 96%, 50%, 0.741);
+    }
+
+    /* Estilo para o link em azul */
+    .blue-link {
+      color: #3182ce; /* Cor azul */
+    }
+
+    .blue-link:hover {
+      text-decoration: underline;
+      color: #1c6fbb; /* Cor azul escuro no hover */
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #888;
+    }
+
+    .fields {
+      text-align: left;
+      margin-top: 40px;
+      color: #a1a1a1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Incident Management API</h1>
+  </header>
+  <main>
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path"><a href="/apidocs">/apidocs</a></span> - Get Api Docs
+    </div>
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path"><a href="/incidents">/incidents</a></span> - Get all incidents
+    </div>
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path"><a href="/incidents/service/123" class="blue-link">/incidents/service/&lt;service_id&gt;</a></span> - Get incident by service ID
+    </div>
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path"><a href="/incidents/element/router01">/incidents/element/&lt;element_name&gt;</a></span> - Get incident by element name
+    </div>
+    <div class="route">
+      <span class="method POST">POST</span>
+      <span class="route-path"><a href="/incidents/update/">/incidents/update/&lt;{}&gt;</a></span> - Update incident
+    </div>
+    <div class="route">
+      <span class="method POST">POST</span>
+      <span class="route-path"><a href="/incidents/create/">/incidents/create/&lt;{}&gt;</a></span> - Create a new incident
+    </div>
+
+    <div class="route">
+      <span class="method DELETE">DELETE</span>
+      <span class="route-path"><a href="/incidents/delete/0000">/incidents/delete/&lt;incidente_id&gt;</a></span> - Delete incident
+    </div>
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path"><a href="/incidents/html">/incidents/html</a></span> - Get incidents (Table html)
+    </div>
+    <div class="fields">
+      <span>Fields Create: {"element","issue_type","start_date","type_service","services_affected"}</span>
+      <br><br>
+      <span>Fields Update: {"incident_id","element","issue_type","start_date","type_service","services_affected"}</span>
+    </div>
+    
+  </main>
+  <footer>
+    &copy; 2025 Incident Management System
+  </footer>
+</body>
+</html>

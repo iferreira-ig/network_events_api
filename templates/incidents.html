@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incidents</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            white-space: nowrap; /* Impede quebra de linha */
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        th {
+            background-color: #4c79a3; /* Cor de fundo azul */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Incidents List</h1>
+    {% if incidents %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Element</th>
+                    <th>Issue Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Time Range</th>
+                    <th>Type Service</th>
+                    <th>Services Affected</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for incident in incidents %}
+                    <tr>
+                        <td>{{ incident.id }}</td>
+                        <td>{{ incident.element }}</td>
+                        <td>{{ incident.issue_type }}</td>
+                        <td>{{ incident.start_date }}</td>
+                        <td>{{ incident.end_date or '' }}</td>
+                        <td>{{ incident.time_range }}</td>
+                        <td>{{ incident.type_service }}</td>
+                        <td>{{ incident.services_affected | join(', ') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No incidents found.</p>
+    {% endif %}
+</body>
+</html>
