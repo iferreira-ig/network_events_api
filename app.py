@@ -25,6 +25,13 @@ swagger_config = {
     "swagger_ui_bundle_js": "https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js",
     "swagger_ui_standalone_preset_js": "https://unpkg.com/swagger-ui-dist@3/swagger-ui-standalone-preset.js",
     "swagger_ui_css": "https://unpkg.com/swagger-ui-dist@3/swagger-ui.css",
+    "swagger_ui_config": {
+        "dom_id": "#swagger-ui",
+        "styles": """
+            .swagger-ui .info .description { display: none; } /* Opcional: oculta descrição */
+            .swagger-ui .footer { display: none; } /* Oculta o footer */
+        """
+    }
 }
 
 template = {
