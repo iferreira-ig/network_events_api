@@ -137,7 +137,7 @@ def create_database():
         raise
     finally:
         session.close()
-create_database()
+#create_database()
 
 def get_incidents_data():
     Session, _ = connect_database()
