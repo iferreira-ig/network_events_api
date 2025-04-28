@@ -1,0 +1,6 @@
+﻿Flask>=3.0.0
+flasgger>=0.9.7.1  # Ou a mais recente
+markupsafe>=2.1.3
+python-dotenv==1.0.0
+sqlalchemy==2.0.35
+psycopg2-binary==2.9.9

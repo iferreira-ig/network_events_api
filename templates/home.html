@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='icon.png') }}"/>
+  <title>Incident Management API</title>
+  <style>
+    /* Estilos do corpo da página */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f3f4f6;
+      color: #2d3748;
+    }
+
+    /* Estilos do cabeçalho */
+    header {
+      background-color: #00537C;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    /* Estilos do conteúdo principal */
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo para as rotas */
+    .route {
+      margin-bottom: 20px;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .GET {
+      background-color: #61affe;
+    }
+
+    .POST {
+      background-color: #49cc90;
+    }
+
+    .DELETE {
+      background-color: #f93e3e;
+    }
+
+    .PUT {
+      background-color: #fca130;
+    }
+
+    .route-path a {
+      font-family: monospace;
+      font-size: 16px;
+      color: #0f65f8;
+      text-decoration: none;
+    }
+
+    .route-path a:hover {
+      text-decoration: underline;
+      color: hsla(241, 96%, 50%, 0.741);
+    }
+
+    .route-disabled {
+      font-family: monospace;
+      font-size: 16px;
+      color: #0f65f8;
+      text-decoration: none;
+    }
+
+    /* Estilo para o link em azul */
+    .blue-link {
+      color: #3182ce; /* Cor azul */
+    }
+
+    .blue-link:hover {
+      text-decoration: underline;
+      color: #1c6fbb; /* Cor azul escuro no hover */
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #888;
+    }
+
+    /* Estilos das mensagens de loading */
+    .route.loading {
+      opacity: 0.3;               /* Torna a div opaca */
+      pointer-events: none;       /* Desativa interações */
+    }
+
+    #loading-msg {
+      display: inline-block;      /* Torna o texto visível */
+      color: black;               /* Cor da mensagem */
+      font-weight: bold;          /* Deixa a mensagem mais destacada */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Incident Management API</h1>
+  </header>
+
+  <main>
+    <!-- Exemplo de rota: /apidocs -->
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path"><a href="/apidocs">/apidocs</a></span> - Get Api Docs
+    </div>
+
+    <!-- Exemplo de rota: /incidents -->
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path">
+        <a href="/incidents" class="route-link">/incidents</a>
+      </span> - Get all incidents
+      <span class="loading-msg" style="display: none; margin-left: 10px; color: gray;">Carregando...</span>
+    </div>
+
+    <!-- Exemplo de rota com service_id dinâmico -->
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path">
+        <a href="#" class="blue-link dynamic-service-link">/incidents/service/&lt;service_id&gt;</a>
+      </span> - Get incident by service ID
+      <span class="loading-msg" style="display: none; margin-left: 10px; color: gray;">Carregando...</span>
+    </div>
+
+    <!-- Exemplo de rota com element_name dinâmico -->
+    <div class="route">
+      <span class="method GET">GET</span>
+      <span class="route-path">
+        <a href="/incidents/element/router01" class="dynamic-element-link">/incidents/element/&lt;element_name&gt;</a>
+      </span> - Get incident by element name
+      <span class="loading-msg" style="display: none; margin-left: 10px; color: gray;">Carregando...</span>
+    </div>
+
+    <!-- Exemplo de rota estática -->
+    <div class="route" id="route-div">
+      <span class="method GET">GET</span>
+      <span class="route-path">
+        <a href="/incidents/html" id="route-link">/incidents/html</a>
+      </span> - Get incidents (Table html)
+      <span id="loading-msg" style="display: none; margin-left: 10px; color: gray;">Carregando...</span>
+    </div>
+
+    <!-- Exemplo de rotas desativadas -->
+    <div class="route">
+      <span class="method POST">POST</span>
+      <span class="route-disabled">/incidents/update/&lt;{}&gt;</span> - Update incident
+    </div>
+
+    <div class="route">
+      <span class="method POST">POST</span>
+      <span class="route-disabled">/incidents/create/&lt;{}&gt;</span> - Create a new incident
+    </div>
+
+    <div class="route">
+      <span class="method DELETE">DELETE</span>
+      <span class="route-disabled">/incidents/delete/&lt;{}&gt;</span> - Delete incident
+    </div>
+
+    <!-- Exemplo de campos -->
+    <div class="fields">
+      <span>Fields Create: {"element","issue_type","start_date","type_service","services_affected"}</span>
+      <br><br>
+      <span>Fields Update: {"incident_id","element","issue_type","start_date","type_service","services_affected"}</span>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Incident Management System
+  </footer>
+
+  <script>
+    // Função comum para mostrar a mensagem de carregamento
+    function showLoadingMessage(routeDiv) {
+      const loadingMsg = routeDiv.querySelector('.loading-msg');
+      routeDiv.classList.add('loading');
+      if (loadingMsg) loadingMsg.style.display = 'inline';
+    }
+  
+    // Função comum para esconder a mensagem de carregamento
+    function hideLoadingMessage(routeDiv) {
+      const loadingMsg = routeDiv.querySelector('.loading-msg');
+      routeDiv.classList.remove('loading');
+      if (loadingMsg) loadingMsg.style.display = 'none';
+    }
+  
+    // Links com ID dinâmico para service_id
+    document.querySelectorAll('.dynamic-service-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+  
+        const routeDiv = this.closest('.route');
+        showLoadingMessage(routeDiv);
+  
+        const serviceId = prompt("Informe o service_id:");
+        if (!serviceId) {
+          hideLoadingMessage(routeDiv);
+          return;  // Se não fornecer um service_id, retorna
+        }
+  
+        // Redireciona após 100ms
+        setTimeout(() => {
+          window.location.href = `/incidents/service/${encodeURIComponent(serviceId)}`;
+        }, 100);
+
+        setTimeout(() => {
+          hideLoadingMessage(routeDiv);
+        }, 8000);  
+      });
+    });
+  
+    // Links com ID dinâmico para element_name
+    document.querySelectorAll('.dynamic-element-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+  
+        const routeDiv = this.closest('.route');
+        showLoadingMessage(routeDiv);
+  
+        const elementName = prompt("Informe o element_name:");
+        if (!elementName) {
+          hideLoadingMessage(routeDiv);
+          return;  // Se não fornecer um element_name, retorna
+        }
+  
+        // Redireciona após 100ms
+        setTimeout(() => {
+          window.location.href = `/incidents/element/${encodeURIComponent(elementName)}`;
+        }, 100);
+
+        setTimeout(() => {
+          hideLoadingMessage(routeDiv);
+        }, 8000);  
+      });
+    });
+  
+    // Links normais (não requerem prompt)
+    document.querySelectorAll('.route-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        const routeDiv = this.closest('.route');
+        showLoadingMessage(routeDiv);
+  
+        // Redireciona após 100ms
+        setTimeout(() => {
+          window.location.href = this.href;
+          }, 100);
+        
+        setTimeout(() => {
+          hideLoadingMessage(routeDiv);
+        }, 8000);  
+      });
+
+    });
+  
+    // Links específicos para /incidents/html (não requerem prompt)
+    document.querySelectorAll('#route-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        const routeDiv = this.closest('.route');
+        showLoadingMessage(routeDiv);
+  
+        // Redireciona após 100ms
+        setTimeout(() => {
+          window.location.href = this.href;
+        }, 100);
+
+        setTimeout(() => {
+          hideLoadingMessage(routeDiv);
+        }, 8000);
+        
+      });
+
+    });
+  </script>
+  
+</body>
+</html>
